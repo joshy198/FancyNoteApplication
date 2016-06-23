@@ -9,12 +9,12 @@ namespace ViewModel.NotesApp.Services
 {
     public interface IDataService
     {
-        IEnumerable<Note> GetAllNotes();
+        Task<IEnumerable<MyNote>> GetAllNotes();
 
-        void AddNote(Note note);
+        Task AddNote(MyNote note);
 
-        void SaveNote(Note note);
+        Task SaveNote(MyNote note);
 
-        void DeleteNote(Note note);
+        Task DeleteNote(MyNote note);
     }
 }

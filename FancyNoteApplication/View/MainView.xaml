@@ -6,13 +6,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:converters="using:FancyNoteApplication.Converters"
     xmlns:models="using:ViewModel.NotesApp.Model"
     DataContext="{Binding Source={StaticResource Locator},
                             Path=MainViewModel}">
     <Page.Resources>
         <converters:DateTimeToDateTimeOffsetConverter x:Key="DateConverter" />
-        <DataTemplate x:Key="NoteTemplate" x:DataType="models:Note">
+        <converters:LatLongToGeopositionConverter x:Key="GeoConverter" />
+        <DataTemplate x:Key="NoteTemplate" x:DataType="models:MyNote">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
@@ -58,29 +60,48 @@
                 <ColumnDefinition Width="64"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="64"/>
-                
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0"
+            <maps:MapControl Grid.Row="0" Grid.ColumnSpan="3"  x:Name="MyMap">
+                <maps:MapItemsControl ItemsSource="{x:Bind VM.Notes, Mode=OneWay}">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:MyNote">
+                            <Grid maps:MapControl.Location="{x:Bind LatLong, Converter={StaticResource GeoConverter}}"
+                              maps:MapControl.NormalizedAnchorPoint="0.5 1">
+                                <Button Height="59" Width="50" Click="{x:Bind Edit}">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image Source= "ms-appx:///Assets/pin.png"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <TextBlock Text="{x:Bind ShortTitle}" />
+                            </Grid>
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
+            </maps:MapControl>
+            <Image Grid.Column="0" Grid.Row="1"
                        Margin="5,0,5,0"
                        x:Name="image"
                        Source="ms-appx:///Assets/search.png"/>
-            <TextBox Grid.Row="0"
+            <TextBox Grid.Row="1"
                      Grid.Column="1"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch" 
                      x:Name="SeachField" FontSize="30"
                      Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <AppBarButton Grid.Row="0"
+            <AppBarButton Grid.Row="1"
                           Grid.Column="2"
                           Click="{x:Bind VM.NavigateToSettings}"
                           Icon="Setting"
                           Label="Settings"/>
-            <Grid Grid.Row="1" Grid.ColumnSpan="3">
+            <Grid Grid.Row="2" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -96,13 +117,13 @@
                                     Date="{x:Bind VM.ToDate , Mode=TwoWay, Converter={StaticResource DateConverter}}"
                                     Header="To" />
             </Grid>
-            <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+            <ListView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
                           ItemContainerStyle="{StaticResource StretchedItemStyle}"
                           ItemTemplate="{StaticResource NoteTemplate}"
                           ItemsSource="{x:Bind VM.Notes, Mode=OneWay}"
                           SelectedItem="{Binding SelectedNote, Mode=TwoWay}"
                           />
-            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+            <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"
                     x:Name="NewINote"
                     Click="{x:Bind VM.NavigateToNewNote}"
                     Content="+"

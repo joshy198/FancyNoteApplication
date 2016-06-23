@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace ViewModel.NotesApp.Model
 {
-    public class EditMessage : GenericMessage<Note>
+    public class EditMessage : GenericMessage<MyNote>
     {
-        public EditMessage(Note content)
+        public EditMessage(MyNote content)
             : base(content)
         {
         }
 
-        public EditMessage(object sender, Note content)
+        public EditMessage(object sender, MyNote content)
             : base(sender, content)
         {
         }
 
-        public EditMessage(object sender, object target, Note content)
+        public EditMessage(object sender, object target, MyNote content)
             : base(sender, target, content)
         {
         }

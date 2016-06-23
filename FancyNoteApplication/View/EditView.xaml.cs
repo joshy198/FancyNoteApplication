@@ -30,7 +30,13 @@ namespace FancyNoteApplication.View
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            VM.Note = e.Parameter as Note;
+            if (e.Parameter != null)
+                VM.Note = e.Parameter as MyNote;
+            else
+            {
+                VM.Note = new MyNote();
+                VM.GetCurrentLocation();
+            }
             //((App)Application.Current).OnBackRequested += OnOnBackRequested;
             //base.OnNavigatedTo(e);
         }

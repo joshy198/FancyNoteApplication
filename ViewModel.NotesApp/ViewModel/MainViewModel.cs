@@ -18,8 +18,8 @@ namespace ViewModel.NotesApp.ViewModel
         private readonly SettingsViewModel settings;
         IDataService dataService;
 
-        private Note note;
-        public Note SelectedNote
+        private MyNote note;
+        public MyNote SelectedNote
         {
             get { return note; }
             set
@@ -33,31 +33,34 @@ namespace ViewModel.NotesApp.ViewModel
                 }
             }
         }
-        private ObservableCollection<Note> notes;
-        public ObservableCollection<Note> Notes
+
+        public async void LoadData()
+        {
+            var temp = await dataService.GetAllNotes();
+            temp.Where(x =>
+                                x.Header.ToUpper().StartsWith(SearchString.ToUpper())
+                                && (!FromDate.HasValue || x.Date >= FromDate.Value)
+                                && (!ToDate.HasValue || x.Date <= ToDate.Value)).ToList();
+            if (settings.SortAscending)
+                temp = temp.OrderBy(x => x.Date).Take(settings.Limitation).ToList();
+            else
+                temp = temp.OrderByDescending(x => x.Date).ToList();
+            notes.Clear();
+            foreach (var note in temp)
+            {
+                notes.Add(note);
+            }
+        }
+        private ObservableCollection<MyNote> notes;
+        public ObservableCollection<MyNote> Notes
         {
             get
             {
-                if (SearchString == null)
-                    SearchString = String.Empty;
-                if (notes == null)
-                    notes = new ObservableCollection<Note>();
-                var temp = dataService.GetAllNotes().Where(x =>
-                                x.Header.ToUpper().StartsWith(SearchString.ToUpper())
-                                && (!FromDate.HasValue|| x.Date >= FromDate.Value)
-                                && (!ToDate.HasValue || x.Date <= ToDate.Value)).ToList();
-                if (settings.SortAscending)
-                    temp = temp.OrderBy(x => x.Date).Take(settings.Limitation).ToList();
-                else
-                    temp = temp.OrderByDescending(x => x.Date).ToList();
-                notes.Clear();
-                foreach (var note in temp)
-                {
-                    notes.Add(note);
-                }
+                LoadData();
                 return notes;
             }
         }
+
         public string SearchString { set; get; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
@@ -72,6 +75,7 @@ namespace ViewModel.NotesApp.ViewModel
             Messenger.Default.Register<DeleteMessage>(this, DeleteNote);
             Messenger.Default.Register<EditMessage>(this, NavigateToEditNote);
             this.navigationService = navigationService;
+            notes = new ObservableCollection<MyNote>();
         }
 
         public void NavigateToNewNote()
@@ -94,7 +98,7 @@ namespace ViewModel.NotesApp.ViewModel
 
             if ((int)res.Id == 0)
             {
-                dataService.DeleteNote(message.Content);
+                await dataService.DeleteNote(message.Content);
                 RaisePropertyChanged(nameof(Notes));
             }
         }

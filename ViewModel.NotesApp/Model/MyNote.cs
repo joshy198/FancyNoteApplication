@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 
 namespace ViewModel.NotesApp.Model
 {
-    public class Note:ObservableObject
+    public class MyNote:ObservableObject
     {
         public DateTime Date{get;set;}
         private string header;
+        public int Id { get; set; }
         public bool IsSelected { get; set; }
         public string Header { get { return header; }set { header = value;Date = DateTime.Now; } }
         private string content;
         public string Content { get { return content; } set { content = value;Date = DateTime.Now; } }
+        public double[] LatLong { get; set; }
         public string Disp_Notes
         {
             get
@@ -26,6 +28,18 @@ namespace ViewModel.NotesApp.Model
                     return Content.Replace(System.Environment.NewLine, " ").Remove(60) + "...";
                 else
                     return Content.Replace(System.Environment.NewLine, " ");
+            }
+        }
+        public string ShortTitle
+        {
+            get
+            {
+                if (Header == null)
+                    Header = "";
+                if (Header.Length > 10)
+                    return Header.Replace(System.Environment.NewLine, " ").Remove(10) + "...";
+                else
+                    return Header.Replace(System.Environment.NewLine, " ");
             }
         }
         public void Delete()

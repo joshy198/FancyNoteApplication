@@ -8,9 +8,9 @@ using ViewModel.NotesApp.Services;
 
 namespace FancyNoteApplication.Services
 {
-    public class DataService:IDataService
+  /*  public class DataService:IDataService
     {
-        private readonly List<Note> allNotes;
+        private readonly List<MyNote> allNotes;
         private IStorageService storageService;
 
         public DataService(IStorageService storageService)
@@ -19,34 +19,34 @@ namespace FancyNoteApplication.Services
             if (allNotes == null)
                 allNotes=NotesFromJson();
         }
-        public IEnumerable<Note> GetAllNotes()
+        public async Task<IEnumerable<MyNote>> GetAllNotes()
         {
             return allNotes;
         }
 
-        public void AddNote(Note note)
+        public async Task AddNote(MyNote note)
         {
             allNotes.Add(note);
-            NotesToJson();
+             NotesToJson();
         }
 
-        public void SaveNote(Note note)
+        public async Task SaveNote(MyNote note)
         {
             note.Date = DateTime.Now;
-            NotesToJson();
+             NotesToJson();
         }
 
-        public void DeleteNote(Note note)
+        public async Task DeleteNote(MyNote note)
         {
-            allNotes.Remove(note);
+             allNotes.Remove(note);
         }
         private void NotesToJson()
         {
             storageService.Write(nameof(allNotes), allNotes);
         }
-        private List<Note> NotesFromJson()
+        private List<MyNote> NotesFromJson()
         {
-            return storageService.Read<List<Note>>(nameof(allNotes), new List<Note>());
+            return storageService.Read<List<MyNote>>(nameof(allNotes), new List<MyNote>());
         }
-    }
+    }*/
 }

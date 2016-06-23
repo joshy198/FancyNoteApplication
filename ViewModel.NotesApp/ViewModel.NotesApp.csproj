@@ -109,7 +109,7 @@
   <ItemGroup>
     <Compile Include="Model\DeleteMessage.cs" />
     <Compile Include="Model\EditMessage.cs" />
-    <Compile Include="Model\Note.cs" />
+    <Compile Include="Model\MyNote.cs" />
     <Compile Include="Common\Navigation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IDataService.cs" />

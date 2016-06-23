@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace ViewModel.NotesApp.Model
 {
-    public class DeleteMessage : GenericMessage<Note>
+    public class DeleteMessage : GenericMessage<MyNote>
     {
-        public DeleteMessage(Note content)
+        public DeleteMessage(MyNote content)
             : base(content)
         {
         }
 
-        public DeleteMessage(object sender, Note content)
+        public DeleteMessage(object sender, MyNote content)
             : base(sender, content)
         {
         }
 
-        public DeleteMessage(object sender, object target, Note content)
+        public DeleteMessage(object sender, object target, MyNote content)
             : base(sender, target, content)
         {
         }

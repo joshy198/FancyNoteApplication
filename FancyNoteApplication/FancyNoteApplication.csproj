@@ -100,6 +100,9 @@
     </Compile>
     <Compile Include="Converters\DateTimeToDateTimeOffsetConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\LatLongToGeopositionConverter.cs" />
+    <Compile Include="Services\CloudDataService.cs" />
+    <Compile Include="Services\Note.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\LocalStorageService.cs" />
     <Compile Include="ViewModel\ConcreteViewModel.cs" />
@@ -121,6 +124,7 @@
     <None Include="FancyNoteApplication_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\pin.png" />
     <Content Include="Assets\search.png" />
     <Content Include="FodyWeavers.xml" />
     <Content Include="Properties\Default.rd.xml" />
